@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Drawer</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="favorites">Favorites</string>
+    <string name="profile">Profile</string>
+    <string name="navigation_drawer">Navigation Drawer</string>
+    <string name="close">Close</string>
+    <string name="open">Open</string>
+</resources>

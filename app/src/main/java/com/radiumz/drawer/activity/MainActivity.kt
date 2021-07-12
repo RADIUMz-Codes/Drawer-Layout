@@ -1,18 +1,21 @@
-package com.radiumz.drawer
+package com.radiumz.drawer.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 
 
-import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import com.google.android.material.navigation.NavigationView
+import com.radiumz.drawer.*
+import com.radiumz.drawer.fragment.About
+import com.radiumz.drawer.fragment.Dashboard
+import com.radiumz.drawer.fragment.Favorites
+import com.radiumz.drawer.fragment.Profile
 
 class MainActivity : AppCompatActivity() {
     lateinit var toggle: ActionBarDrawerToggle

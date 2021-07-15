@@ -1,35 +1,43 @@
 package com.radiumz.drawer.fragment
 
+import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.radiumz.drawer.R
 import com.radiumz.drawer.adapter.DashboardAdapter
+import com.radiumz.drawer.model.Book
+import com.radiumz.drawer.util.ConnectionManager
 
 class Dashboard : Fragment() {
+//    declaring Recycler View
     lateinit var recyclerDashboard: RecyclerView
+//    Layout Manager
     lateinit var layoutManager: RecyclerView.LayoutManager
 
-    val nameList = arrayListOf<String>(
-        "Abhishek Kumar",
-        "Radiumz",
-        "Hell yeah",
-        "Ak $$33",
-        "James",
-        "Alpha",
-        "Wow!!",
-        "Gym",
-        "Roller",
-        "Hashing",
-    )
+//   Declaring Adapter
     lateinit var recyclerAdapter: DashboardAdapter
 
+    val bookList= arrayListOf<Book>(
+        Book("P.S. I love You", "Cecelia Ahern", "Rs. 299", "4.5", R.drawable.ps_ily),
+        Book("The Great Gatsby", "F. Scott Fitzgerald", "Rs. 399", "4.1", R.drawable.great_gatsby),
+        Book("Anna Karenina", "Leo Tolstoy", "Rs. 199", "4.3", R.drawable.anna_kare),
+        Book("Madame Bovary", "Gustave Flaubert", "Rs. 500", "4.0", R.drawable.madame),
+        Book("War and Peace", "Leo Tolstoy", "Rs. 249", "4.8", R.drawable.war_and_peace),
+        Book("Lolita", "Vladimir Nabokov", "Rs. 349", "3.9", R.drawable.lolita),
+        Book("Middlemarch", "George Eliot", "Rs. 599", "4.2", R.drawable.middlemarch),
+        Book("The Adventures of Huckleberry Finn", "Mark Twain", "Rs. 699", "4.5", R.drawable.adventures_finn),
+        Book("Moby-Dick", "Herman Melville", "Rs. 499", "4.5", R.drawable.moby_dick),
+        Book("The Lord of the Rings", "J.R.R Tolkien", "Rs. 749", "5.0", R.drawable.lord_of_rings)
+    )
+    lateinit var btnDashboard:Button
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -37,11 +45,53 @@ class Dashboard : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_dashboard, container, false)
 
+//          Checking for active internet connection
+        btnDashboard=view.findViewById(R.id.btnDashboard)
+        btnDashboard.setOnClickListener {
+            if(ConnectionManager().checkConnectivity(activity as Context)) {
+//                Internet is Available
+
+//                Making Dialog Box
+                val dialog= AlertDialog.Builder(activity as Context)
+                dialog.setTitle("Success")
+                dialog.setMessage("Internet Connection Found")
+                dialog.setPositiveButton("OK"){text,listenet->
+//                Do Nothing
+                }
+                dialog.setNegativeButton("Cancel"){ text,listener->
+//                    Do nothing
+                }
+//                Create Dialog
+                dialog.create()
+//                Show Dialog
+                dialog.show()
+
+            }
+            else{
+//                Internet is Unavailable
+                //                Making Dialog Box
+                val dialog= AlertDialog.Builder(activity as Context)
+                dialog.setTitle("Error")
+                dialog.setMessage("Internet Connection is Not Found")
+                dialog.setPositiveButton("OK"){text,listenet->
+//                Do Nothing
+                }
+                dialog.setNegativeButton("Cancel"){ text,listener->
+//                    Do nothing
+                }
+//                Create Dialog
+                dialog.create()
+//                Show Dialog
+                dialog.show()
+
+            }
+        }
+
         recyclerDashboard = view.findViewById(R.id.rclrDashboard)
 
         layoutManager = LinearLayoutManager(activity)
 
-        recyclerAdapter = DashboardAdapter(activity as Context, nameList)
+        recyclerAdapter = DashboardAdapter(activity as Context, bookList)
 
         recyclerDashboard.adapter = recyclerAdapter
 
@@ -55,6 +105,8 @@ class Dashboard : Fragment() {
         )
 
         return view
+
+
     }
 
 

@@ -8,9 +8,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.Volley
 import com.radiumz.drawer.R
 import com.radiumz.drawer.adapter.DashboardAdapter
 import com.radiumz.drawer.model.Book
@@ -25,8 +30,9 @@ class Dashboard : Fragment() {
 //   Declaring Adapter
     lateinit var recyclerAdapter: DashboardAdapter
 
+    // Static List
     val bookList= arrayListOf<Book>(
-        Book("P.S. I love You", "Cecelia Ahern", "Rs. 299", "4.5", R.drawable.ps_ily),
+        /*Book("P.S. I love You", "Cecelia Ahern", "Rs. 299", "4.5", R.drawable.ps_ily),
         Book("The Great Gatsby", "F. Scott Fitzgerald", "Rs. 399", "4.1", R.drawable.great_gatsby),
         Book("Anna Karenina", "Leo Tolstoy", "Rs. 199", "4.3", R.drawable.anna_kare),
         Book("Madame Bovary", "Gustave Flaubert", "Rs. 500", "4.0", R.drawable.madame),
@@ -35,7 +41,7 @@ class Dashboard : Fragment() {
         Book("Middlemarch", "George Eliot", "Rs. 599", "4.2", R.drawable.middlemarch),
         Book("The Adventures of Huckleberry Finn", "Mark Twain", "Rs. 699", "4.5", R.drawable.adventures_finn),
         Book("Moby-Dick", "Herman Melville", "Rs. 499", "4.5", R.drawable.moby_dick),
-        Book("The Lord of the Rings", "J.R.R Tolkien", "Rs. 749", "5.0", R.drawable.lord_of_rings)
+        Book("The Lord of the Rings", "J.R.R Tolkien", "Rs. 749", "5.0", R.drawable.lord_of_rings)*/
     )
     lateinit var btnDashboard:Button
     override fun onCreateView(
@@ -91,23 +97,69 @@ class Dashboard : Fragment() {
 
         layoutManager = LinearLayoutManager(activity)
 
-        recyclerAdapter = DashboardAdapter(activity as Context, bookList)
 
-        recyclerDashboard.adapter = recyclerAdapter
+//        Queue variable to store to store a Queue of Requests from an API
+        val queue = Volley.newRequestQueue(activity as Context)
+//        Url
+        val url="http://13.235.250.119/v1/book/fetch_books/"
 
-        recyclerDashboard.layoutManager = layoutManager
+/*
+    Object representation
+    Objects created using this syntax are known as
+    anonymous objects. We use this syntax when we
+    want to override the methods of a class with
+    very few modifications.
+*/
+        val jsonObjectRequest=object : JsonObjectRequest(Request.Method.GET, url, null,
+            Response.Listener {
+                              val success =it.getBoolean("success")
+                if(success){
+                    val data = it.getJSONArray("data")
+                    for(i in 0 until data.length()){
+                        val bookJsonObject= data.getJSONObject(i)
+                        val bookObject = Book(
+                            bookJsonObject.getString("book_id"),
+                            bookJsonObject.getString("name"),
+                            bookJsonObject.getString("author"),
+                            bookJsonObject.getString("rating"),
+                            bookJsonObject.getString("price"),
+                            bookJsonObject.getString("image")
+                        )
+                        bookList.add(bookObject)
+                        recyclerAdapter = DashboardAdapter(activity as Context, bookList)
 
-        recyclerDashboard.addItemDecoration(
-            DividerItemDecoration(
-                recyclerDashboard.context,
-                (layoutManager as LinearLayoutManager).orientation
-            )
-        )
+                        recyclerDashboard.adapter = recyclerAdapter
+
+                        recyclerDashboard.layoutManager = layoutManager
+
+                        recyclerDashboard.addItemDecoration(
+                            DividerItemDecoration(
+                                recyclerDashboard.context,
+                                (layoutManager as LinearLayoutManager).orientation
+                            )
+                        )
+                    }
+                }
+                else{
+                    Toast.makeText(activity as Context ,"Error",Toast.LENGTH_SHORT).show()
+                }
+
+        },Response.ErrorListener {
+            print("Error is $it")
+        }){
+
+            override fun getHeaders(): MutableMap<String, String> { // this INHERITED class returns mutable maps
+                // this functions returns HashMaps, there won't be any contradictions as it is built on top of MutableMaps
+                val headers= HashMap<String,String>()
+                headers["Content-type"] = "application/json" // 1st key and value
+                headers["token"]="c5011a8786c3f4" // unique token
+                return headers
+            }
+
+        }
+
+        queue.add(jsonObjectRequest)
 
         return view
-
-
     }
-
-
 }

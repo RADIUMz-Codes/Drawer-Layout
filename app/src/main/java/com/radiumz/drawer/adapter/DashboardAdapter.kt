@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.radiumz.drawer.R
 import com.radiumz.drawer.model.Book
+import com.squareup.picasso.Picasso
 import java.util.ArrayList
 
 class DashboardAdapter(val context: Context,val itemList: ArrayList<Book>):RecyclerView.Adapter<DashboardAdapter.DashboardViewHolder>() {
@@ -33,10 +34,11 @@ class DashboardAdapter(val context: Context,val itemList: ArrayList<Book>):Recyc
         val book = itemList[position]
         holder.txtBookName.text=book.bookName
         holder.txtBookAuthor.text=book.bookAuthor
-        holder.txtBookPrice.text=book.bookCost
+        holder.txtBookPrice.text=book.bookPrice
         holder.txtBookRating.text=book.bookRating
-        holder.imgBookImage.setImageResource(book.bookImage)
-
+//        holder.imgBookImage.setImageResource(book.bookImage)
+//        Using Picasso to populate Image from a url into a view
+        Picasso.get().load(book.bookImage).into(holder.imgBookImage)
         holder.rclyItem.setOnClickListener {
             Toast.makeText(context,"Clicked on ${holder.txtBookName.text}",Toast.LENGTH_SHORT).show()
         }

@@ -160,7 +160,8 @@ class Dashboard : Fragment() {
 
 
                 },Response.ErrorListener {
-                    print("Error is $it")
+                    // Added error response for volley error
+                    Toast.makeText(activity as Context,"Volley Error!!!",Toast.LENGTH_SHORT).show()
                 }){
 
                 override fun getHeaders(): MutableMap<String, String> { // this INHERITED class returns mutable maps

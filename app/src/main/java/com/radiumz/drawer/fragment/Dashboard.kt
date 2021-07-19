@@ -56,47 +56,7 @@ class Dashboard : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_dashboard, container, false)
 
-//          Checking for active internet connection
-        btnDashboard=view.findViewById(R.id.btnDashboard)
-        btnDashboard.setOnClickListener {
-            if(ConnectionManager().checkConnectivity(activity as Context)) {
-//                Internet is Available
 
-//                Making Dialog Box
-                val dialog= AlertDialog.Builder(activity as Context)
-                dialog.setTitle("Success")
-                dialog.setMessage("Internet Connection Found")
-                dialog.setPositiveButton("OK"){text,listenet->
-//                Do Nothing
-                }
-                dialog.setNegativeButton("Cancel"){ text,listener->
-//                    Do nothing
-                }
-//                Create Dialog
-                dialog.create()
-//                Show Dialog
-                dialog.show()
-
-            }
-            else{
-//                Internet is Unavailable
-                //                Making Dialog Box
-                val dialog= AlertDialog.Builder(activity as Context)
-                dialog.setTitle("Error")
-                dialog.setMessage("Internet Connection is Not Found")
-                dialog.setPositiveButton("OK"){text,listenet->
-//                Do Nothing
-                }
-                dialog.setNegativeButton("Cancel"){ text,listener->
-//                    Do nothing
-                }
-//                Create Dialog
-                dialog.create()
-//                Show Dialog
-                dialog.show()
-
-            }
-        }
 
         recyclerDashboard = view.findViewById(R.id.rclrDashboard)
 

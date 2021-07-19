@@ -157,8 +157,6 @@ class Dashboard : Fragment() {
             dialog.show()
 
         }
-        print("Hello")
         return view
-
     }
 }

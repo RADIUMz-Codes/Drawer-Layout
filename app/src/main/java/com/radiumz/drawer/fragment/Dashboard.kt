@@ -24,6 +24,7 @@ import com.radiumz.drawer.R
 import com.radiumz.drawer.adapter.DashboardAdapter
 import com.radiumz.drawer.model.Book
 import com.radiumz.drawer.util.ConnectionManager
+import org.json.JSONException
 
 class Dashboard : Fragment() {
 //    declaring Recycler View
@@ -116,39 +117,47 @@ class Dashboard : Fragment() {
 */
         if(ConnectionManager().checkConnectivity(activity as Context))
         {
+
             val jsonObjectRequest=object : JsonObjectRequest(Request.Method.GET, url, null,
                 Response.Listener {
-                    val success =it.getBoolean("success")
-                    if(success){
-                        val data = it.getJSONArray("data")
-                        for(i in 0 until data.length()){
-                            val bookJsonObject= data.getJSONObject(i)
-                            val bookObject = Book(
-                                bookJsonObject.getString("book_id"),
-                                bookJsonObject.getString("name"),
-                                bookJsonObject.getString("author"),
-                                bookJsonObject.getString("rating"),
-                                bookJsonObject.getString("price"),
-                                bookJsonObject.getString("image")
-                            )
-                            bookList.add(bookObject)
-                            recyclerAdapter = DashboardAdapter(activity as Context, bookList)
-
-                            recyclerDashboard.adapter = recyclerAdapter
-
-                            recyclerDashboard.layoutManager = layoutManager
-
-                            recyclerDashboard.addItemDecoration(
-                                DividerItemDecoration(
-                                    recyclerDashboard.context,
-                                    (layoutManager as LinearLayoutManager).orientation
+                    try {
+                        val success =it.getBoolean("success")
+                        if(success){
+                            val data = it.getJSONArray("data")
+                            for(i in 0 until data.length()){
+                                val bookJsonObject= data.getJSONObject(i)
+                                val bookObject = Book(
+                                    bookJsonObject.getString("book_id"),
+                                    bookJsonObject.getString("name"),
+                                    bookJsonObject.getString("author"),
+                                    bookJsonObject.getString("rating"),
+                                    bookJsonObject.getString("price"),
+                                    bookJsonObject.getString("image")
                                 )
-                            )
+                                bookList.add(bookObject)
+                                recyclerAdapter = DashboardAdapter(activity as Context, bookList)
+
+                                recyclerDashboard.adapter = recyclerAdapter
+
+                                recyclerDashboard.layoutManager = layoutManager
+
+                                recyclerDashboard.addItemDecoration(
+                                    DividerItemDecoration(
+                                        recyclerDashboard.context,
+                                        (layoutManager as LinearLayoutManager).orientation
+                                    )
+                                )
+                            }
                         }
-                    }
-                    else{
+                        else{
+                            Toast.makeText(activity as Context ,"Error",Toast.LENGTH_SHORT).show()
+                        }
+
+                    }catch (e:JSONException){
                         Toast.makeText(activity as Context ,"Error",Toast.LENGTH_SHORT).show()
                     }
+
+
 
                 },Response.ErrorListener {
                     print("Error is $it")

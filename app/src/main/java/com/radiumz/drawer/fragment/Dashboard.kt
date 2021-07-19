@@ -10,10 +10,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
+
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
-import androidx.recyclerview.widget.DividerItemDecoration
+
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.Request
@@ -48,7 +48,6 @@ class Dashboard : Fragment() {
         Book("Moby-Dick", "Herman Melville", "Rs. 499", "4.5", R.drawable.moby_dick),
         Book("The Lord of the Rings", "J.R.R Tolkien", "Rs. 749", "5.0", R.drawable.lord_of_rings)*/
     )
-    lateinit var btnDashboard:Button
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -101,12 +100,12 @@ class Dashboard : Fragment() {
 
                                 recyclerDashboard.layoutManager = layoutManager
 
-                                recyclerDashboard.addItemDecoration(
+                                /*recyclerDashboard.addItemDecoration(
                                     DividerItemDecoration(
                                         recyclerDashboard.context,
                                         (layoutManager as LinearLayoutManager).orientation
                                     )
-                                )
+                                )*/
                             }
                         }
                         else{

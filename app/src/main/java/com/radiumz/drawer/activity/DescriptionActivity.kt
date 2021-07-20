@@ -94,6 +94,7 @@ class DescriptionActivity : AppCompatActivity() {
                 return  headers
             }
         }
+
         queue.add(jsonRequest)
     }
 

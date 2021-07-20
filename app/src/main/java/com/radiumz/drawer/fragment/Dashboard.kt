@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RelativeLayout
 
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
@@ -34,7 +35,8 @@ class Dashboard : Fragment() {
 
 //   Declaring Adapter
     lateinit var recyclerAdapter: DashboardAdapter
-
+    // Progress Layout
+    lateinit var progressLayout :RelativeLayout
     // Static List
     val bookList= arrayListOf<Book>(
         /*Book("P.S. I love You", "Cecelia Ahern", "Rs. 299", "4.5", R.drawable.ps_ily),
@@ -55,7 +57,8 @@ class Dashboard : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_dashboard, container, false)
 
-
+        progressLayout = view.findViewById(R.id.progressLayout)
+        progressLayout.visibility = View.VISIBLE
 
         recyclerDashboard = view.findViewById(R.id.rclrDashboard)
 
@@ -80,6 +83,7 @@ class Dashboard : Fragment() {
             val jsonObjectRequest=object : JsonObjectRequest(Request.Method.GET, url, null,
                 Response.Listener {
                     try {
+                        progressLayout.visibility = View.GONE
                         val success =it.getBoolean("success")
                         if(success){
                             val data = it.getJSONArray("data")

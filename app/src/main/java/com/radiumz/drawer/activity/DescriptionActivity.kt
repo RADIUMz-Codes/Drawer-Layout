@@ -5,6 +5,7 @@ import android.os.Bundle
 import com.radiumz.drawer.R
 
 class DescriptionActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_description)
